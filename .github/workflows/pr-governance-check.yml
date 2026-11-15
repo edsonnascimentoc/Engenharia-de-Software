@@ -1,0 +1,99 @@
+name: Governance & Steering PR Security Check
+
+on:
+  pull_request:
+    branches: [ main, master ]
+    types: [ opened, synchronize, reopened, labeled, unlabeled ]
+
+jobs:
+  check-steering-protection:
+    name: Protect Steering & Governance Rulesets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect Changes in Governance Files
+        id: changed-files
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            .github/copilot-instructions.md
+            .cursorrules
+            .cursor/rules/**
+
+      - name: Verify Steering File Modifications
+        if: steps.changed-files.outputs.any_changed == 'true'
+        run: |
+          echo "⚠️ ATENÇÃO: Alterações detectadas nos arquivos protegidos de Governança e Steering de IA!"
+          echo "Arquivos modificados:"
+          echo "${{ steps.changed-files.outputs.all_changed_files }}"
+          
+          # Verifica se o PR contém a label de aprovação formal da arquitetura
+          HAS_LABEL="${{ contains(github.event.pull_request.labels.*.name, 'architecture-approved') }}"
+          
+          if [ "$HAS_LABEL" != "true" ]; then
+            echo "❌ ERRO: Alterações em diretrizes de Arquitetura exigem a label 'architecture-approved'."
+            echo "Solicite a revisão de um Arquiteto de Software para aplicar a label no PR."
+            exit 1
+          else
+            echo "✅ Alteração aprovada pelo time de Arquitetura (label 'architecture-approved' detectada)."
+          fi
+
+  pr-title-lint:
+    name: Validate Conventional Commits Title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR Title Syntax
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+
+  security-and-secret-scan:
+    name: Audit Secrets & Security Patterns
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Secret Scanning (Trufflehog)
+        uses: trufflesecurity/trufflehog-actions-scan@v3.88.15
+        with:
+          path: ./
+          base: ${{ github.event.pull_request.base.sha }}
+          head: ${{ github.event.pull_request.head.sha }}
+          extra_args: --only-verified
+
+  quality-gate-summary:
+    name: Final Quality Gate Assessment
+    needs: [check-steering-protection, pr-title-lint, security-and-secret-scan]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Evaluate Quality Gate Status
+        run: |
+          if [ "${{ needs.check-steering-protection.result }}" == "success" ] && \
+             [ "${{ needs.pr-title-lint.result }}" == "success" ] && \
+             [ "${{ needs.security-and-secret-scan.result }}" == "success" ]; then
+            echo "✅ Quality Gate aprovado! O PR atende aos padrões de governança."
+            exit 0
+          else
+            echo "❌ Quality Gate reprovado. Verifique os logs das etapas anteriores."
+            exit 1
+          fi
