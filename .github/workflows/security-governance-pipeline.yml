@@ -14,14 +14,14 @@ permissions:
   actions: read
 
 jobs:
-  sca-sbom-cve-scan:
-    name: SCA, SBOM & Vulnerability Audit
+  security-and-secret-scan:
+    name: Security, Secret Scan & SBOM Audit
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Audit Secrets (Gitleaks)
+      - name: Audit Secrets & Security Patterns (Gitleaks)
         uses: gitleaks/gitleaks-action@v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -34,7 +34,7 @@ jobs:
           output-file: sbom.spdx.json
 
       - name: Scan Repository & SBOM for CVEs (Trivy)
-        uses: aquasecurity/trivy-action@0.29.0
+        uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
           scan-ref: '.'
