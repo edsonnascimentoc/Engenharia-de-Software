@@ -15,17 +15,17 @@ permissions:
 
 jobs:
   security-and-secret-scan:
-    name: Security, Secret Scan & SBOM Audit
+    name: Security and Secret Scan
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Audit Secrets & Security Patterns (Gitleaks)
-        uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        continue-on-error: true
+      - name: Audit Secrets (TruffleHog)
+        uses: trufflesecurity/trufflehog@main
+        with:
+          head: ${{ github.head_ref }}
+          base: ${{ github.base_ref }}
 
       - name: Generate Software Bill of Materials (SBOM)
         uses: anchore/sbom-action@v0
