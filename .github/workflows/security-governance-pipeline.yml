@@ -1,0 +1,51 @@
+﻿name: Security Governance Pipeline (SCA, SBOM & CVE Check)
+
+on:
+  push:
+    branches: [ "main", "master", "develop", "feat/*" ]
+  pull_request:
+    branches: [ "main", "master", "develop" ]
+  schedule:
+    - cron: '0 4 * * 1'
+
+permissions:
+  contents: read
+  security-events: write
+  actions: read
+
+jobs:
+  security-and-secret-scan:
+    name: Security and Secret Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Audit Secrets (TruffleHog)
+        uses: trufflesecurity/trufflehog@main
+        with:
+          head: ${{ github.head_ref }}
+          base: ${{ github.base_ref }}
+
+      - name: Generate Software Bill of Materials (SBOM)
+        uses: anchore/sbom-action@v0
+        with:
+          format: spdx-json
+          output-file: sbom.spdx.json
+
+      - name: Scan Repository & SBOM for CVEs (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH'
+          exit-code: '1'
+          ignore-unfixed: false
+
+      - name: Upload SARIF report to GitHub Security Tab
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'

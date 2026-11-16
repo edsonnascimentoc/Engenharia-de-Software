@@ -1,0 +1,4 @@
+﻿# Arquivo de Exceções Temporárias de Vulnerabilidades (Trivy)
+# REGRA: Toda entrada DEVE conter a justificativa técnica, o link da ADR correspondente e a data limite de expiração (máx 30 dias).
+# Exemplo:
+# CVE-2023-XXXXX # Justificativa: Falso positivo em lib interna. ADR: docs/adr/0002-excecao-cve.md. Expira em: 2026-12-15
