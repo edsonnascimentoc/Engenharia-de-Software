@@ -1,9 +1,17 @@
-## 📚 Governança e Framework ALM
+# Automação de Governança Multiagente (MCP + ISO 29148 + EARS)
 
-A governança do Ciclo de Vida de Aplicações do projeto é guiada pelo nosso framework modular de ALM:
+Este pacote contém os artefatos de automação para integrar a arquitetura multiagente ao ciclo de vida de desenvolvimento do repositório.
 
-- 🚀 **[Guia e Playbook Operacional de ALM](docs/alm/index.md)**
-  - 📖 [Fundamentação Conceitual](docs/alm/fundamentacao/conceito-e-fases-macro.md)
-  - 📋 [Matriz RACI Global](docs/alm/governanca/matriz-raci.md) & [Matriz de Criticidade](docs/alm/governanca/matriz-criticidade.md)
-  - 🔄 [Workflow das 8 Fases Operacionais (Gates DoR / DoD)](docs/alm/fases/fase-1-viabilidade.md)
-  - 📄 [Templates Padrão (ADR, SRS ISO 29148, PR Template)](docs/alm/artefatos/templates-e-padroes.md)
+## Estrutura de Arquivos
+
+- `.github/agents/runner.js`: Script Node.js validador de Issues.
+- `.github/agents/mcp.json`: Configuração dos servidores MCP para GitHub e Discord.
+- `.github/agents/prompts/issue-reviewer-prompt.txt`: Prompt do agente auditor (ISO 29148 / EARS).
+- `.github/agents/prompts/issue-drafter-prompt.txt`: Prompt do agente gerador de rascunhos.
+- `.github/workflows/mcp-agent-validation.yml`: Pipeline de CI/CD do GitHub Actions.
+
+## Como Instalar no Repositório
+
+1. Extraia o conteúdo deste arquivo na raiz do seu repositório Git.
+2. Certifique-se de ter os secrets `GITHUB_TOKEN` e `DISCORD_BOT_TOKEN` configurados nas definições do repositório no GitHub.
+3. Ao abrir ou editar qualquer Issue, o workflow `.github/workflows/mcp-agent-validation.yml` será disparado automaticamente para validar a especificação.
