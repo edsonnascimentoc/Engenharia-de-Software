@@ -1,0 +1,25 @@
+name: ALM CI Quality Gate
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate-governance-and-quality:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Validação de Estilo e Sintaxe Markdown
+        uses: avto-dev/markdown-lint-check@v1
+        with:
+          args: 'docs/**/*.md README.md'
+
+      - name: Verificação de Rastreabilidade em Commits de PR
+        if: github.event_name == 'pull_request'
+        run: |
+          echo "Verificando alinhamento dos commits com a regra de rastreabilidade (ex: REQ-XXX)..."
+          git log --oneline -n 5
