@@ -1,4 +1,4 @@
-﻿name: Security Governance Pipeline (SCA, SBOM & CVE Check)
+name: Security Governance Pipeline (SCA, SBOM & CVE Check)
 
 on:
   push:
@@ -45,7 +45,7 @@ jobs:
           ignore-unfixed: false
 
       - name: Upload SARIF report to GitHub Security Tab
-        uses: github/codeql-action/upload-sarif@v3
+        uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: 'trivy-results.sarif'
