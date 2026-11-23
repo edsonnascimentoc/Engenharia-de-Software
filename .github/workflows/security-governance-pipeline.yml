@@ -1,4 +1,4 @@
-﻿name: Security Governance Pipeline (SCA, SBOM & CVE Check)
+name: Security Governance Pipeline (SCA, SBOM & CVE Check)
 
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Audit Secrets (TruffleHog)
         uses: trufflesecurity/trufflehog@main
