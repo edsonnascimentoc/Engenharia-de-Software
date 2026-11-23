@@ -1,27 +1,27 @@
 ---
-name: EspecificaÃ§Ã£o de Requisito (ISO 29148 & EARS)
-about: Cadastra um novo requisito funcional ou nÃ£o-funcional com metadados formais de rastreabilidade.
-title: '[REQ-XXX] <TÃ­tulo Objetivo do Requisito>'
+name: Especificação de Requisito (ISO 29148 & EARS)
+about: Cadastra um novo requisito funcional ou não-funcional com metadados formais de rastreabilidade.
+title: '[REQ-XXX] <Título Objetivo do Requisito>'
 labels: 'requisito, iso-29148, aguardando-refinamento'
 assignees: ''
 ---
 
-## 1. DescriÃ§Ã£o e Racional de NegÃ³cio
+## 1. Descrição e Racional de Negócio
 
-## 2. CritÃ©rios de Aceite em Sintaxe EARS
-- **CritÃ©rio 1:** 
+## 2. Critérios de Aceite em Sintaxe EARS
+- **Critério 1:** 
 
-## 3. MÃ©todo e CritÃ©rio de VerificaÃ§Ã£o
-- **MÃ©todo de VerificaÃ§Ã£o:** 
-- **MÃ©trica de Aceite:** 
+## 3. Método e Critério de Verificação
+- **Método de Verificação:** 
+- **Métrica de Aceite:** 
 
 ## 4. Tabela de Metadados de Rastreabilidade (ISO/IEC/IEEE 29148:2018)
 
 | Atributo Normativo | Valor Registrado |
 | :--- | :--- |
-| **Identificador Ãšnico (ID)** | REQ- |
-| **Tipo de Objeto** | Requisito Funcional / Requisito NÃ£o-Funcional |
-| **Fonte (Source)** | Stakeholder / Documento / AnÃ¡lise de NegÃ³cio |
-| **Prioridade (Priority)** | P0-CrÃ­tico / P1-Alto / P2-MÃ©dio / P3-Baixo |
-| **MÃ©todo de VerificaÃ§Ã£o** | Teste Automatizado / InspeÃ§Ã£o |
+| **Identificador Único (ID)** | REQ- |
+| **Tipo de Objeto** | Requisito Funcional / Requisito Não-Funcional |
+| **Fonte (Source)** | Stakeholder / Documento / Análise de Negócio |
+| **Prioridade (Priority)** | P0-Crítico / P1-Alto / P2-Médio / P3-Baixo |
+| **Método de Verificação** | Teste Automatizado / Inspeção |
 | **Status do Ciclo de Vida** | Proposto / Homologado |

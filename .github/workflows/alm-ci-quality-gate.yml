@@ -10,15 +10,15 @@ jobs:
   validate-governance-and-quality:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do RepositÃ³rio
+      - name: Checkout do Repositório
         uses: actions/checkout@v4
 
-      - name: ValidaÃ§Ã£o de Estilo e Sintaxe Markdown
+      - name: Validação de Estilo e Sintaxe Markdown
         uses: avto-dev/markdown-lint-check@v1
         with:
           args: 'docs/**/*.md README.md'
 
-      - name: VerificaÃ§Ã£o de Rastreabilidade em Commits de PR
+      - name: Verificação de Rastreabilidade em Commits de PR
         if: github.event_name == 'pull_request'
         run: |
           echo "Verificando alinhamento dos commits com a regra de rastreabilidade (ex: REQ-XXX)..."
