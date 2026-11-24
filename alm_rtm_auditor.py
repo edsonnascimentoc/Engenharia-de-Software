@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 ALM & RTM Automated Auditor & Matrix Generator
 ----------------------------------------------

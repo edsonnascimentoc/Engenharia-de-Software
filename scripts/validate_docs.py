@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Validate local Markdown links and basic RTM structure."""
 
 from __future__ import annotations
