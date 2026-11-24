@@ -2,24 +2,59 @@ name: ALM CI Quality Gate
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+
+permissions:
+  contents: read
 
 jobs:
-  validate-governance-and-quality:
+  tests:
+    name: tests
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do Repositório
-        uses: actions/checkout@v4
-
-      - name: Validação de Estilo e Sintaxe Markdown
-        uses: avto-dev/markdown-lint-check@v1
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          args: 'docs/**/*.md README.md'
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Testes Python
+        run: python -m unittest discover -s tests/python -v
+      - name: Testes Node.js
+        run: node --test tests/node/*.test.js
 
-      - name: Verificação de Rastreabilidade em Commits de PR
-        if: github.event_name == 'pull_request'
-        run: |
-          echo "Verificando alinhamento dos commits com a regra de rastreabilidade (ex: REQ-XXX)..."
-          git log --oneline -n 5
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar Ruff
+        run: python -m pip install -r requirements-dev.txt
+      - name: Ruff
+        run: ruff check alm_rtm_auditor.py scripts/validate_docs.py tests/python
+      - name: FormataÃ§Ã£o Ruff
+        run: ruff format --check scripts/validate_docs.py tests/python
+
+  docs-and-traceability:
+    name: docs-and-traceability
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Markdownlint
+        uses: DavidAnson/markdownlint-cli2-action@v16
+        with:
+          globs: "**/*.md"
+      - name: Validar RTM e links locais
+        run: python scripts/validate_docs.py

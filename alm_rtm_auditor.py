@@ -9,10 +9,8 @@ Rastreabilidade (RTM) em formato Markdown.
 """
 
 import os
-import re
-import json
-import argparse
 from pathlib import Path
+
 
 class ALMAuditor:
     def __init__(self, repo_root="."):

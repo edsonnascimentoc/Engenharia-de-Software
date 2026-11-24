@@ -16,6 +16,7 @@ A documentação está organizada de forma modular para facilitar a consulta, a 
 - [Matriz de Criticidade](governanca/matriz-criticidade.md): Enquadramento do nível de formalidade segundo o porte do projeto (Porte P, M e G).
 - [Matriz RACI Global](governanca/matriz-raci.md): Mapeamento formal de responsabilidades dos papéis corporativos em cada fase.
 - [KPIs e Métricas DORA](governanca/kpis-e-metricas-dora.md): Indicadores-chave de desempenho, velocidade, estabilidade e qualidade.
+- [Baseline do Repositório e Referências ALM](governanca/baseline-rastreabilidade.md): Inventário datado, branches, workflows e estado das referências GitHub consultadas.
 
 ### 3. Fases Operacionais do Playbook (Procedimentos, Gates DoR/DoD)
 - [Fase 1: Estudo de Viabilidade e Alinhamento Estratégico](fases/fase-1-viabilidade.md)
@@ -29,6 +30,7 @@ A documentação está organizada de forma modular para facilitar a consulta, a 
 
 ### 4. Artefatos e Modelos Padrão
 - [Templates e Artefatos Padrão](artefatos/templates-e-padroes.md): Modelos obrigatórios (ADR, SRS ISO 29148, PR Template e Runbook de Operações).
+- [Matriz de Rastreabilidade (RTM)](artefatos/matriz-rastreabilidade.md): Vínculo operacional entre requisitos, issues, arquitetura, código, testes, PRs e releases.
 
 ---
 

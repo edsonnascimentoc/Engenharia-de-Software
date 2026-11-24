@@ -45,7 +45,7 @@ Para mitigar esses riscos, a governança do repositório adota a abordagem de **
 
 Para estruturar a **Segurança em Profundidade**, o repositório deve aplicar os controles específicos em cada uma das cinco macroetapas do ciclo de vida:
 
-```
+```text
 [ 1. Planejamento ] ---> [ 2. Desenvolvimento ] ---> [ 3. CI/CD Pipeline ] ---> [ 4. Empacotamento ] ---> [ 5. Operações & DAST ]
   - Req. Segurança          - Análise Estática (SAST)    - Gate de Vulnerabilidades  - Imagens Enxutas (Slim)    - DAST em Produção
   - Avaliação de Riscos     - Auditoria Local (npm)     - SBOM em formato SPDX      - Assinatura Digitais      - Monitoramento CVE
