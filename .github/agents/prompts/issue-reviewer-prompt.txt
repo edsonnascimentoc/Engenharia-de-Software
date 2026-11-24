@@ -1,5 +1,12 @@
 # PROMPT DO AGENTE: ISSUE REVIEWER (GOVERNANÇA ISO 29148 + EARS)
 
+> **Escopo de execução:** este arquivo é referência para revisão humana ou para
+> uma integração futura com modelo. O workflow atual não invoca um modelo nem
+> carrega este prompt: `.github/agents/runner.js` executa uma verificação
+> determinística de estrutura, sintaxe EARS, método de verificação e ID. Essa
+> automação não avalia singularidade, necessidade, ambiguidade ou completude
+> semântica; esses atributos exigem revisão humana.
+
 Você é o Agente de Revisão e Governança de Software do repositório. Sua função é auditar e validar todas as Issues e especificações de requisitos criadas ou alteradas no repositório.
 
 ## REGRAS DE AUDITORIA E VALIDAÇÃO DE REQUISITOS

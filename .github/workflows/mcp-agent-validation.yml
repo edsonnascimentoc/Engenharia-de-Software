@@ -1,4 +1,4 @@
-name: MCP Agent Issue Validation & Refinement
+name: Issue Requirements Validation
 
 on:
   issues:
@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       issue_number:
-        description: 'Número da Issue para validar manualmente'
+        description: 'Número da issue para validar manualmente'
         required: true
         type: string
 
@@ -21,79 +21,108 @@ jobs:
       - name: Checkout do Repositório
         uses: actions/checkout@v4
 
-      - name: Setup Node.js / Ambiente MCP
+      - name: Configurar Node.js
         uses: actions/setup-node@v7
         with:
           node-version: '20'
 
-      - name: Determinar Número da Issue
-        id: get_issue
-        run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "issue_number=${{ github.event.inputs.issue_number }}" >> $GITHUB_OUTPUT
-          else
-            echo "issue_number=${{ github.event.issue.number }}" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Executar Agente Issue Reviewer (Validação EARS + ISO 29148)
-        id: reviewer
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          ISSUE_NUMBER: ${{ steps.get_issue.outputs.issue_number }}
-        run: |
-          echo "Iniciando validação da Issue #${ISSUE_NUMBER}..."
-          node .github/agents/runner.js \
-            --agent issue-reviewer \
-            --issue-id "${ISSUE_NUMBER}" \
-            --rules-path .github/agents/prompts/issue-reviewer-prompt.txt
-
-      - name: Feedback Automático na Issue
-        if: always()
+      - name: Buscar e validar a issue
+        id: fetch_issue
         uses: actions/github-script@v9
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fs = require('fs');
-            const issueNumber = parseInt('${{ steps.get_issue.outputs.issue_number }}', 10);
-            
-            if (!issueNumber || isNaN(issueNumber)) {
-              core.setFailed("Número da issue inválido ou ausente.");
-              return;
+            const fs = require('node:fs');
+            const path = require('node:path');
+
+            const rawIssueNumber = context.eventName === 'workflow_dispatch'
+              ? context.payload.inputs?.issue_number
+              : context.payload.issue?.number;
+            const rawValue = String(rawIssueNumber ?? '');
+            if (!/^[1-9]\d*$/.test(rawValue)) {
+              throw new Error('Número da issue inválido: informe um inteiro positivo.');
             }
 
-            let result = { approved: false, feedback_summary: "Erro na leitura do resultado do agente.", required_actions: [] };
-            try {
-              result = JSON.parse(fs.readFileSync('./agent-review-result.json', 'utf8'));
-            } catch (e) {
-              console.log("Arquivo agent-review-result.json não encontrado ou inválido.");
+            const issueNumber = Number(rawValue);
+            if (!Number.isSafeInteger(issueNumber)) {
+              throw new Error('Número da issue fora do intervalo permitido.');
             }
-            
-            if (result.approved) {
-              await github.rest.issues.createComment({
-                issue_number: issueNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: `✅ **Aprovação Automática de Governança (ISO 29148 / EARS)**\n\nA Issue está em conformidade com as regras de especificação formal e pronta para codificação.`
-              });
-              await github.rest.issues.addLabels({
-                issue_number: issueNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                labels: ['status: ready-for-dev']
-              });
-            } else {
-              await github.rest.issues.createComment({
-                issue_number: issueNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                body: `⚠️ **Revisão de Qualidade Requer Alterações (ISO 29148 / EARS)**\n\n${result.feedback_summary}\n\n**Ações Necessárias:**\n` + 
-                      result.required_actions.map(a => `- ${a}`).join('\n')
-              });
-              await github.rest.issues.addLabels({
-                issue_number: issueNumber,
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                labels: ['status: needs-refinement']
-              });
+
+            const { data: issue } = await github.rest.issues.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issueNumber
+            });
+            if (issue.pull_request) {
+              throw new Error(`#${issueNumber} é um pull request, não uma issue.`);
             }
+
+            const inputPath = path.join(process.env.RUNNER_TEMP, 'issue-review-input.json');
+            fs.writeFileSync(inputPath, JSON.stringify({
+              issue_number: issue.number,
+              body: issue.body ?? ''
+            }), { encoding: 'utf8', mode: 0o600 });
+            core.setOutput('issue_number', String(issue.number));
+            core.info(`Issue #${issue.number} carregada para validação estrutural.`);
+
+      - name: Validar conteúdo e gerar resultado
+        id: review
+        env:
+          ISSUE_REVIEW_INPUT: ${{ runner.temp }}/issue-review-input.json
+          ISSUE_REVIEW_RESULT: ${{ runner.temp }}/agent-review-result.json
+        run: >-
+          node .github/agents/runner.js
+          --input-file "$ISSUE_REVIEW_INPUT"
+          --result-file "$ISSUE_REVIEW_RESULT"
+
+      - name: Publicar resultado da validação
+        if: always() && steps.fetch_issue.outcome == 'success'
+        uses: actions/github-script@v9
+        env:
+          ISSUE_NUMBER: ${{ steps.fetch_issue.outputs.issue_number }}
+        with:
+          script: |
+            const fs = require('node:fs');
+            const path = require('node:path');
+            const issueNumber = Number(process.env.ISSUE_NUMBER);
+            if (!Number.isSafeInteger(issueNumber) || issueNumber < 1) {
+              throw new Error('O número da issue validado não está disponível.');
+            }
+
+            const resultPath = path.join(process.env.RUNNER_TEMP, 'agent-review-result.json');
+            if (!fs.existsSync(resultPath)) {
+              throw new Error('O validador não produziu resultado; nenhum comentário ou label foi aplicado.');
+            }
+            const result = JSON.parse(fs.readFileSync(resultPath, 'utf8'));
+            if (result.issue_number !== issueNumber
+                || typeof result.approved !== 'boolean'
+                || !Array.isArray(result.required_actions)) {
+              throw new Error('O resultado do validador é inválido ou pertence a outra issue.');
+            }
+
+            const labelName = result.approved
+              ? 'status: ready-for-dev'
+              : 'status: needs-refinement';
+            const repositoryLabels = await github.paginate(
+              github.rest.issues.listLabelsForRepo,
+              { owner: context.repo.owner, repo: context.repo.repo, per_page: 100 }
+            );
+            if (!repositoryLabels.some((label) => label.name === labelName)) {
+              throw new Error(`A label requerida "${labelName}" não existe; nenhum comentário ou label foi aplicado.`);
+            }
+
+            const body = result.approved
+              ? `✅ **Validação estrutural aprovada**\n\n${result.feedback_summary}\n\nEsta verificação automatizada não substitui a revisão semântica.`
+              : `⚠️ **A issue precisa de refinamento**\n\n${result.feedback_summary}\n\n**Ações necessárias:**\n${result.required_actions.map((action) => `- ${action}`).join('\n')}`;
+
+            await github.rest.issues.createComment({
+              issue_number: issueNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body
+            });
+            await github.rest.issues.addLabels({
+              issue_number: issueNumber,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: [labelName]
+            });

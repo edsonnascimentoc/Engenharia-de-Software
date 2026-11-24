@@ -99,7 +99,7 @@ A esteira monitora automaticamente alterações nos seguintes caminhos críticos
 
 ## 3. Fluxo de Execução e Bloqueio de Merges
 
-```
+```text
 [Desenvolvedor abre PR]
          │
          ▼

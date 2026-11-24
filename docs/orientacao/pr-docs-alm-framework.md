@@ -66,5 +66,5 @@ docs/alm/
 
 ## 🔍 Instruções para os Revisores
 1. Revisar a coerência da **Matriz de Criticidade** (`docs/alm/governanca/matriz-criticidade.md`) e validar se atende aos projetos da equipe.
-2. Navegar pelo arquivo raiz [`docs/alm/index.md`](docs/alm/index.md) para testar a experiência de leitura e navegação.
+2. Navegar pelo arquivo raiz [`docs/alm/index.md`](../alm/index.md) para testar a experiência de leitura e navegação.
 3. Aprovar e realizar o *Merge* utilizando a opção **Squash and Merge** ou **Rebase and Merge** para manter o histórico da branch `main` limpo.

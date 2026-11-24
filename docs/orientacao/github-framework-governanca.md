@@ -13,7 +13,7 @@ Este documento estabelece o guia oficial de arquitetura e governança para a pla
 
 Antes de habilitar qualquer funcionalidade descrita nos módulos a seguir, aplique o seguinte fluxo decisório:
 
-```
+```text
 [Demanda de Recurso / Feature]
                │
                ▼

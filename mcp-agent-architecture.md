@@ -6,7 +6,7 @@ A evolução da Engenharia de Software moderna exige a transição de especifica
 
 O sistema intercepta anomalias de execução (logs de exceção), realiza a triagem de relevância técnica, elabora rascunhos de *issues*, submete a especificação ao crivo de qualidade formal (ISO/IEC/IEEE 29148:2018 e EARS), refina eventuais lacunas e publica o artefato no GitHub, notificando simultaneamente os engenheiros de software através do Discord.
 
-```
+```text
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
 │                               CAMADA DE OBSERVABILIDADE                                │
 │ [Log de Exceção/Anomalia] ──► [Logger Receiver Agent] ──► [Bug Analyzer Agent]        │
@@ -44,7 +44,7 @@ O sistema intercepta anomalias de execução (logs de exceção), realiza a tria
 
 Para garantir que a infraestrutura de agentes seja versionada e auditável como código (*Agents as Code*), o repositório deve adotar a seguinte topologia na pasta `.github/`:
 
-```
+```text
 .github/
 ├── mcp.json                         # Configuração dos servidores MCP (GitHub e Discord)
 ├── agents/

@@ -1,0 +1,2 @@
+# Keep this version aligned with the local setup and CI quality gate.
+ruff==0.17.6
