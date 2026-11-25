@@ -1,47 +1,126 @@
-# Automação de Governança Multiagente (MCP + ISO 29148 + EARS)
+# ALM Governance Tools
 
-Este pacote contém os artefatos de automação para integrar a arquitetura multiagente ao ciclo de vida de desenvolvimento do repositório.
+[![CI](https://github.com/edsonnascimentoc/Engenharia-de-Software/actions/workflows/alm-ci-quality-gate.yml/badge.svg?branch=main)](https://github.com/edsonnascimentoc/Engenharia-de-Software/actions/workflows/alm-ci-quality-gate.yml)
+[![Coverage](https://codecov.io/gh/edsonnascimentoc/Engenharia-de-Software/branch/main/graph/badge.svg)](https://codecov.io/gh/edsonnascimentoc/Engenharia-de-Software)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](LICENSE)
 
-## Estrutura de Arquivos
+Ferramentas para tornar a governança do ciclo de vida de requisitos verificável em
+repositórios de software. O projeto automatiza verificações de rastreabilidade ALM,
+estrutura documental e qualidade de issues, reduzindo revisões manuais repetitivas.
 
-- `.github/agents/runner.js`: Script Node.js validador de Issues.
-- `.github/agents/mcp.json`: Configuração dos servidores MCP para GitHub e Discord.
-- `.github/agents/prompts/issue-reviewer-prompt.txt`: Prompt do agente auditor (ISO 29148 / EARS).
-- `.github/agents/prompts/issue-drafter-prompt.txt`: Prompt do agente gerador de rascunhos.
-- `.github/workflows/mcp-agent-validation.yml`: Pipeline de CI/CD do GitHub Actions.
+## Navegação
 
-## Como Instalar no Repositório
+- [Instalação e uso](#instalação-e-uso)
+- [Exemplos](#exemplos)
+- [Demonstração](#demonstração)
+- [Limitações](#limitações)
+- [Documentação de governança](#documentação-de-governança)
+- [Contribuição e licença](#contribuição-e-licença)
 
-1. Extraia o conteúdo deste arquivo na raiz do seu repositório Git.
-2. Certifique-se de ter os secrets `GITHUB_TOKEN` e `DISCORD_BOT_TOKEN` configurados nas definições do repositório no GitHub.
-3. Ao abrir ou editar qualquer Issue, o workflow `.github/workflows/mcp-agent-validation.yml` será disparado automaticamente para validar a especificação.
+## Pré-requisitos
 
-## Desenvolvimento local
+- Python 3.12 ou superior
+- Node.js 20 ou superior (para o validador de issues)
+- Git
 
-O gate Python da CI usa Ruff `0.17.6`, fixado em `requirements-dev.txt`. Configure um ambiente virtual na raiz do repositório para instalar a mesma versão usada pela CI.
+## Instalação e uso
 
-### Windows (PowerShell)
+Clone o repositório e prepare o ambiente Python:
+
+```bash
+git clone https://github.com/edsonnascimentoc/Engenharia-de-Software.git
+cd Engenharia-de-Software
+python -m venv .venv
+```
+
+Ative o ambiente e instale as ferramentas de desenvolvimento:
 
 ```powershell
-python -m venv .venv
+# Windows PowerShell
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements-dev.txt
 ```
 
-### Linux/macOS
-
 ```bash
-python3 -m venv .venv
+# Linux/macOS
 source .venv/bin/activate
 python -m pip install -r requirements-dev.txt
 ```
 
-Execute os checks Ruff usados pela CI:
+## Exemplos
+
+Audite a matriz de rastreabilidade usando o caminho legado:
 
 ```bash
-python -m ruff --version
-python -m ruff check alm_rtm_auditor.py scripts/validate_docs.py tests/python
-python -m ruff format --check scripts/validate_docs.py tests/python
+python alm_rtm_auditor.py
 ```
 
-Para aplicar a formatação localmente, remova `--check` do comando `ruff format`. A pasta `.venv` é ignorada pelo Git.
+Valide documentação e links locais, execute a suíte Node e confira estilo Python:
+
+```bash
+python -m src.validate_docs
+node --test tests/node/*.test.js
+python -m ruff check src tests/python
+python -m ruff format --check src tests/python
+```
+
+O workflow [ALM CI Quality Gate](.github/workflows/alm-ci-quality-gate.yml) executa
+testes, lint e validação documental em pushes para `main` e pull requests.
+
+## Demonstração
+
+O projeto é um conjunto de ferramentas de linha de comando e workflows, sem interface
+gráfica. A imagem abaixo registra a saída real do auditor executado contra uma fixture
+sintética; gere-a novamente com `python scripts/capture_alm_demo.py`.
+
+![Captura da execução sintética do auditor ALM](docs/media/alm-governance-demo.svg)
+
+Consulte também a [execução local documentada](docs/alm/index.md) e o
+[registro de evidências e verificação](docs/alm/artefatos/evidencias-verificacao.md).
+
+## Limitações
+
+- A auditoria verifica estrutura e rastreabilidade documental; ela não substitui
+  revisão humana sobre correção ou suficiência dos requisitos.
+- A validação automatizada de issues é estrutural e não garante qualidade semântica.
+- Os badges refletem serviços externos e dependem da disponibilidade e atualização
+  desses serviços.
+- O badge de cobertura só exibirá um percentual após o Codecov aceitar o primeiro
+  relatório desta branch.
+- O projeto não publica nem implanta uma aplicação de produto.
+
+## Documentação de governança
+
+- [Índice ALM](docs/alm/index.md)
+- [Matriz de rastreabilidade](docs/alm/artefatos/matriz-rastreabilidade.md)
+- [Plano de governança](docs/superpowers/plans/2026-11-23-governanca-alm.md)
+- [Contribuição e releases](CONTRIBUTING.md)
+- [Checklist de release](docs/alm/artefatos/checklist-release.md)
+- [Metadados propostos para o GitHub](docs/alm/artefatos/metadados-github.md)
+- [Segurança](SECURITY.md)
+- [Código de conduta](CODE_OF_CONDUCT.md)
+
+## Componentes
+
+- `src/agents/runner.js`: validador Node.js de issues; `.github/agents/runner.js`
+  mantém compatibilidade com o caminho anterior.
+- `src/alm_rtm_auditor.py`: auditoria ALM, também acessível por
+  `python alm_rtm_auditor.py`.
+- `src/validate_docs.py`: verifica documentação e links locais.
+- `.github/agents/mcp.json` e `.github/agents/prompts/`: configuração e prompts dos
+  agentes de issue.
+- `.github/workflows/`: quality gate ALM, validação de issues e pipeline de segurança.
+
+Ruff `0.17.6` e Coverage `7.10.6` estão fixados em `requirements-dev.txt`, alinhados
+com as ferramentas usadas pela CI. Para executar localmente os mesmos testes Python:
+
+```bash
+python -m pip install -r requirements-dev.txt
+coverage run --branch -m unittest discover -s tests/python -v
+coverage report --show-missing
+```
+
+## Contribuição e licença
+
+Leia [CONTRIBUTING.md](CONTRIBUTING.md) antes de abrir uma contribuição. Este projeto
+está licenciado sob a [GNU General Public License v3.0](LICENSE).

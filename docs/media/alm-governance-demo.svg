@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 312" role="img" aria-labelledby="title description">
+<title id="title">Execução do auditor ALM</title>
+<desc id="description">Saída real do auditor em fixture sintética.</desc>
+<rect width="1440" height="312" rx="16" fill="#111827"/>
+<rect width="1440" height="48" rx="16" fill="#1f2937"/>
+<circle cx="28" cy="24" r="7" fill="#f87171"/>
+<circle cx="52" cy="24" r="7" fill="#fbbf24"/>
+<circle cx="76" cy="24" r="7" fill="#34d399"/>
+<text x="105" y="30" class="title">Demonstração sintética · ALM Auditor</text>
+<style>.title{font:600 16px Segoe UI,Arial,sans-serif;fill:#e5e7eb}.line{font:15px Consolas,Menlo,monospace;fill:#d1d5db}</style>
+<text x="32" y="88" class="line">$ python alm_rtm_auditor.py (fixture sintética)</text>
+<text x="32" y="113" class="line">Auditoria ALM concluída com sucesso! Relatório gerado em $TEMP/alm_rtm_report.md</text>
+<text x="32" y="138" class="line"></text>
+<text x="32" y="163" class="line">Amostra do relatório gerado:</text>
+<text x="32" y="188" class="line">| **1. Planejamento e Viabilidade** | Coberto | Presente | Manter monitoramento |</text>
+<text x="32" y="213" class="line">| **2. Engenharia de Requisitos** | Coberto | Presente | Manter monitoramento |</text>
+<text x="32" y="238" class="line">| **3. Design e Arquitetura** | Coberto | Presente | Manter monitoramento |</text>
+<text x="32" y="263" class="line">| **4. Desenvolvimento e Codificação** | Coberto | Presente | Manter monitoramento |</text>
+</svg>

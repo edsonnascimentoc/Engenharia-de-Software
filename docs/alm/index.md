@@ -31,6 +31,9 @@ A documentação está organizada de forma modular para facilitar a consulta, a 
 ### 4. Artefatos e Modelos Padrão
 - [Templates e Artefatos Padrão](artefatos/templates-e-padroes.md): Modelos obrigatórios (ADR, SRS ISO 29148, PR Template e Runbook de Operações).
 - [Matriz de Rastreabilidade (RTM)](artefatos/matriz-rastreabilidade.md): Vínculo operacional entre requisitos, issues, arquitetura, código, testes, PRs e releases.
+- [Política de contribuição](../../CONTRIBUTING.md): Fluxo issue → branch → commit → PR → teste → release e regras de rastreabilidade.
+- [Checklist de release](artefatos/checklist-release.md): preparação e publicação manual de versões SemVer.
+- [Metadados propostos para o GitHub](artefatos/metadados-github.md): descrição, topics e estado verificado de labels, milestones e demo.
 
 ---
 
