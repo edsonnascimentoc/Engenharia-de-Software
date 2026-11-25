@@ -83,6 +83,8 @@ jobs:
         uses: DavidAnson/markdownlint-cli2-action@v16
         with:
           globs: "**/*.md"
+      - name: Verificar sincronização das instruções de IA
+        run: python scripts/sync_ai_instructions.py --check
       - name: Validar RTM e links locais
         run: python -m src.validate_docs
       - name: Validar rastreabilidade do PR
