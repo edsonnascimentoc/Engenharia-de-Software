@@ -11,6 +11,24 @@ SOURCE = ROOT / ".github" / "copilot-instructions.md"
 MIRROR = ROOT / ".cursorrules"
 
 
+def sync_instructions(source_path: Path, mirror_path: Path, check: bool) -> int:
+    source = source_path.read_bytes()
+    if check:
+        if mirror_path.read_bytes() == source:
+            print(".cursorrules is synchronized with .github/copilot-instructions.md")
+            return 0
+        print(
+            ".cursorrules is out of date; run "
+            "'python scripts/sync_ai_instructions.py' to synchronize it.",
+            file=sys.stderr,
+        )
+        return 1
+
+    mirror_path.write_bytes(source)
+    print("Synchronized .cursorrules from .github/copilot-instructions.md")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Synchronize .cursorrules from the canonical Copilot instructions."
@@ -21,22 +39,7 @@ def main() -> int:
         help="fail without writing when the mirror differs from the canonical source",
     )
     args = parser.parse_args()
-
-    source = SOURCE.read_bytes()
-    if args.check:
-        if MIRROR.read_bytes() == source:
-            print(".cursorrules is synchronized with .github/copilot-instructions.md")
-            return 0
-        print(
-            ".cursorrules is out of date; run "
-            "'python scripts/sync_ai_instructions.py' to synchronize it.",
-            file=sys.stderr,
-        )
-        return 1
-
-    MIRROR.write_bytes(source)
-    print("Synchronized .cursorrules from .github/copilot-instructions.md")
-    return 0
+    return sync_instructions(SOURCE, MIRROR, args.check)
 
 
 if __name__ == "__main__":
