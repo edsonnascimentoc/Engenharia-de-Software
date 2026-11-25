@@ -109,6 +109,8 @@ Consulte também a [execução local documentada](docs/alm/index.md) e o
 - `src/validate_docs.py`: verifica documentação e links locais.
 - `.github/agents/mcp.json` e `.github/agents/prompts/`: configuração e prompts dos
   agentes de issue.
+- `.github/copilot-instructions.md` é a fonte canônica das instruções compartilhadas;
+  `.cursorrules` é sincronizado com `python scripts/sync_ai_instructions.py`.
 - `.github/workflows/`: quality gate ALM, validação de issues e pipeline de segurança.
 
 Ruff `0.17.6` e Coverage `7.10.6` estão fixados em `requirements-dev.txt`, alinhados
