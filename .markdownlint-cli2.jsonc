@@ -3,5 +3,6 @@
     "default": false,
     "MD040": true,
     "MD047": true
-  }
+  },
+  "globs": ["**/*.md", "!**/.venv/**", "!**/node_modules/**"]
 }

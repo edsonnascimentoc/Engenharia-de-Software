@@ -5,8 +5,8 @@ const path = require('node:path');
 const { spawnSync } = require('node:child_process');
 const test = require('node:test');
 
-const runnerPath = path.resolve(__dirname, '../../.github/agents/runner.js');
-const { parseArgs, reviewIssue } = require('../../.github/agents/runner.js');
+const runnerPath = path.resolve(__dirname, '../../src/agents/runner.js');
+const { parseArgs, reviewIssue } = require('../../src/agents/runner.js');
 
 const validIssueBody = `
 ## Contexto e racional

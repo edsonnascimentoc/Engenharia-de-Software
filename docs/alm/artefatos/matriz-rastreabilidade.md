@@ -57,6 +57,7 @@ conformidade organizacional nem validação em produção.
 | Regra do framework | RN-SEC-01 | Documentar exceções de CVE com justificativa, ADR e expiração. | `.trivyignore` contém instrução e exemplo; não há exceções ativas registradas no arquivo inspecionado. | Nenhum validador de expiração encontrado. | Parcial — regra descrita, enforcement não comprovado. |
 | Regra do framework | RN-SEC-02 | Agrupar atualizações Dependabot semanal/quinzenalmente. | Dependabot está semanal, sem configuração `groups` observada. | Nenhuma validação de agrupamento encontrada. | Parcial — frequência presente, agrupamento ausente. |
 | Regra do framework | RN-SEC-03 | Validar licenças das dependências por SBOM. | Geração SBOM presente; etapa de política/licença não identificada. | Não comprovada. | Pendente. |
+| Regra do framework | RF-ALM-TRACE-01 | Classificar demandas; ligar requisito a issue, mudança, teste, PR e release quando aplicável; permitir justificativa para manutenção/documentação sem ID. | [Política de contribuição](../../../CONTRIBUTING.md), [templates de issue](../../../.github/ISSUE_TEMPLATE/) e [template de PR](../../../.github/PULL_REQUEST_TEMPLATE.md). | `scripts/validate_pr_traceability.py` no job `docs-and-traceability` do workflow `alm-ci-quality-gate.yml`; verifica referências em PRs `feat`/`fix` que alterem `src/` ou `tests/`. | Implementado no repositório; aprovação do vínculo semântico permanece responsabilidade de revisão. |
 
 ## C. Exemplos documentais excluídos do baseline ativo
 

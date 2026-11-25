@@ -1,0 +1,11 @@
+{
+  "name": "alm-governance-tools",
+  "private": true,
+  "description": "JavaScript tooling configuration for ALM repository governance",
+  "scripts": {
+    "test": "node --test tests/node/*.test.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

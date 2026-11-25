@@ -14,9 +14,10 @@ O conteúdo versionado é majoritariamente documentação e automação de gover
 | Área | Arquivos/pastas observados | Papel e observação |
 |---|---|---|
 | Workflows | `.github/workflows/alm-ci-quality-gate.yml`; `mcp-agent-validation.yml`; `pr-governance-check.yml`; `security-governance-pipeline.yml`; `validar-governança-e-qualidade.yml` | Cinco fluxos de CI/segurança/governança; existem verificações duplicadas de Markdown e etapas que apenas imprimem mensagens. |
-| Agentes | `.github/agents/runner.js`; `mcp.json`; `prompts/issue-drafter-prompt.txt`; `prompts/issue-reviewer-prompt.txt` | Runner de revisão de issues, configuração e prompts. |
+| Agentes | `src/agents/runner.js` (`.github/agents/runner.js` é wrapper compatível); `.github/agents/mcp.json`; `prompts/issue-drafter-prompt.txt`; `prompts/issue-reviewer-prompt.txt` | Runner de revisão de issues, configuração e prompts. |
 | Templates GitHub | `.github/ISSUE_TEMPLATE/requisito-iso29148.md`; `.github/PULL_REQUEST_TEMPLATE.md` | Template de requisito e template principal de PR. |
-| Scripts | `alm_rtm_auditor.py`; `bootstrap-security.ps1`; `bootstrap-security.sh`; `scripts/migrate-alm-docs.ps1`; `scripts/migrate-alm-docs.sh` | Auditoria RTM, bootstrap de segurança e migração documental multiplataforma. |
+| Código Python | `src/alm_rtm_auditor.py`; `src/validate_docs.py` (wrappers compatíveis na raiz e em `scripts/`) | Auditoria RTM e validação documental. |
+| Scripts operacionais | `bootstrap-security.ps1`; `bootstrap-security.sh`; `scripts/migrate-alm-docs.ps1`; `scripts/migrate-alm-docs.sh` | Bootstrap de segurança e migração documental multiplataforma. |
 | Documentação ALM | `docs/alm/` (fundamentação, governança, fases 1–8 e artefatos) | Playbook e padrões de ciclo de vida. A matriz operacional está em `artefatos/matriz-rastreabilidade.md`. |
 | Segurança e orientação | `docs/security/`; `docs/orientacao/`; `docs/steering-ia/`; `docs/templates/`; `docs/architecture/adr/` | Políticas, guias, templates e arquitetura. |
 | Raiz e configurações | `README.md`; `LICENSE`; `.gitignore`; `.trivyignore`; `.cursorrules`; `.github/dependabot.yml`; `mcp-agent-architecture.md` | README é introdutório; licença é GNU GPL versão 3; `.gitignore` contém apenas `.vs/`; Dependabot monitora GitHub Actions semanalmente. |
