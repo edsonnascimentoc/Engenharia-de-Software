@@ -5,6 +5,17 @@ abrir uma demanda, consulte a [RTM](docs/alm/artefatos/matriz-rastreabilidade.md
 e classifique-a como requisito de produto, regra do framework ou exemplo
 documental. Não crie IDs de produto para exemplos.
 
+## Manutenção das instruções de IA
+
+Edite as instruções compartilhadas em [`.github/copilot-instructions.md`](.github/copilot-instructions.md), a fonte canônica. Não edite `.cursorrules` manualmente: gere a cópia compatível com Cursor executando:
+
+```bash
+python scripts/sync_ai_instructions.py
+python scripts/sync_ai_instructions.py --check
+```
+
+A verificação também é executada pelo quality gate.
+
 ## Fluxo de contribuição
 
 1. **Issue:** abra uma issue usando o template de [bug](.github/ISSUE_TEMPLATE/bug_report.md),
