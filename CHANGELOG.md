@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- Clarified the release checklist with a commit audit and explicit consistency
+  checks across the changelog, annotated tag, remote tag, and GitHub release.
 - Documented the Conventional Commits details, Semantic Versioning tag format,
   release notes structure, and a manual release checklist. Releases are not
   published automatically.
