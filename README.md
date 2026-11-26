@@ -12,6 +12,7 @@ estrutura documental e qualidade de issues, reduzindo revisões manuais repetiti
 
 - [Instalação e uso](#instalação-e-uso)
 - [Exemplos](#exemplos)
+- [Compatibilidade dos caminhos legados](#compatibilidade-dos-caminhos-legados)
 - [Demonstração](#demonstração)
 - [Limitações](#limitações)
 - [Documentação de governança](#documentação-de-governança)
@@ -64,6 +65,15 @@ python -m ruff check src tests/python
 python -m ruff format --check src tests/python
 ```
 
+## Compatibilidade dos caminhos legados
+
+Os wrappers `alm_rtm_auditor.py` e `.github/agents/runner.js` serão mantidos até
+30/06/2027 para permitir a migração dos consumidores. O suporte limita-se à
+compatibilidade e correções de defeitos ou segurança; novas funcionalidades devem
+ser implementadas nos caminhos oficiais em `src/`. A revisão para remoção ocorrerá
+em junho de 2027. Consulte a [política de compatibilidade](docs/compatibilidade.md)
+para os comandos de migração e os critérios de extensão ou remoção.
+
 O workflow [ALM CI Quality Gate](.github/workflows/alm-ci-quality-gate.yml) executa
 testes, lint e validação documental em pushes para `main` e pull requests.
 
@@ -112,8 +122,6 @@ Consulte também a [execução local documentada](docs/alm/index.md) e o
   reexporta a API pública do validador para consumidores que usam o caminho legado.
 - `.github/agents/mcp.json` e `.github/agents/prompts/`: configuração e prompts dos
   agentes de issue.
-- `.github/copilot-instructions.md` é a fonte canônica das instruções compartilhadas;
-  `.cursorrules` é sincronizado com `python scripts/sync_ai_instructions.py`.
 - `.github/workflows/`: quality gate ALM, validação de issues e pipeline de segurança.
 
 Ruff `0.17.6` e Coverage `7.10.6` estão fixados em `requirements-dev.txt`, alinhados
