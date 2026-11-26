@@ -45,6 +45,23 @@ A verificação também é executada pelo quality gate.
    do changelog e dos PRs incluídos. A criação da tag e a publicação da release são
    ações manuais; nenhum workflow publica automaticamente.
 
+## Convenção de nomes da documentação
+
+- Para novos documentos, use nomes em minúsculas, com palavras separadas por hífens
+  (`kebab-case`) e extensão `.md`. Use o idioma principal do conteúdo; neste
+  repositório, documentos de processo e governança são escritos em português.
+- Preserve siglas e termos técnicos consagrados quando necessário (por exemplo,
+  `rtm` e `cicd`), sem alternar maiúsculas e minúsculas dentro do mesmo nome.
+- Arquivos convencionais exigidos por ferramentas ou plataformas mantêm o nome
+  oficial, como `README.md`, `CHANGELOG.md`, `LICENSE` e `CODE_OF_CONDUCT.md`.
+- Não renomeie arquivos existentes apenas para uniformizar o idioma. Antes de uma
+  renomeação necessária, pesquise e atualize todos os links Markdown, referências
+  em código, workflows, scripts, configurações e documentação externa conhecida;
+  valide os destinos com `python -m src.validate_docs` e revise o diff antes do PR.
+- Uma renomeação sem necessidade funcional deve ser proposta separadamente, com
+  lista de referências encontradas, plano de compatibilidade quando aplicável e
+  evidência de que nenhum link ficou quebrado.
+
 ## Critérios verificáveis
 
 - Issues de bug descrevem passos para reproduzir, resultado atual e esperado,
