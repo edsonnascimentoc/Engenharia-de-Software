@@ -106,7 +106,10 @@ Consulte também a [execução local documentada](docs/alm/index.md) e o
   mantém compatibilidade com o caminho anterior.
 - `src/alm_rtm_auditor.py`: auditoria ALM, também acessível por
   `python alm_rtm_auditor.py`.
-- `src/validate_docs.py`: verifica documentação e links locais.
+- `src/validate_docs.py`: implementação oficial da validação de documentação e links
+  locais, executada com `python -m src.validate_docs`.
+- `scripts/validate_docs.py`: wrapper de compatibilidade que encaminha a execução e
+  reexporta a API pública do validador para consumidores que usam o caminho legado.
 - `.github/agents/mcp.json` e `.github/agents/prompts/`: configuração e prompts dos
   agentes de issue.
 - `.github/copilot-instructions.md` é a fonte canônica das instruções compartilhadas;
