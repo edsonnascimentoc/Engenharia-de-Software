@@ -2,10 +2,14 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from scripts.validate_docs import validate_links, validate_rtm
+from scripts.validate_docs import markdown_files, validate_links, validate_rtm
+from src.validate_docs import markdown_files as src_markdown_files
 
 
 class DocumentationValidationTests(unittest.TestCase):
+    def test_legacy_wrapper_reexports_canonical_markdown_files(self):
+        self.assertIs(markdown_files, src_markdown_files)
+
     def test_detects_broken_relative_markdown_link(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
